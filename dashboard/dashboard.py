@@ -40,12 +40,9 @@ product_orderItems_category_order_df = pd.read_csv(
 order_orderPayment_df = pd.read_csv('./data/order_orderPayment.csv')
 order_reviews_df = pd.read_csv('./data/order_reviews.csv')
 
-datetime_cols = ['order_purchase_timestamp', 'order_approved_at', 'order_delivered_carrier_date',
-                 'order_delivered_customer_date', 'order_estimated_delivery_date']
-for col in datetime_cols:
-    order_orderItem_orderPayment_df[col] = pd.to_datetime(
-        order_orderItem_orderPayment_df[col])
-    order_orderPayment_df[col] = pd.to_datetime(order_orderPayment_df[col])
+order_orderItem_orderPayment_df['order_purchase_timestamp'] = pd.to_datetime(
+    order_orderItem_orderPayment_df['order_purchase_timestamp'])
+order_orderPayment_df['order_purchase_timestamp'] = pd.to_datetime(order_orderPayment_df['order_purchase_timestamp'])
 
 col1, col2 = st.columns(2)
 
