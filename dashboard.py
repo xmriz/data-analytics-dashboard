@@ -39,10 +39,12 @@ product_orderItems_category_order_df = pd.read_csv(
     './data/product_orderItems_category_order.csv')
 order_orderPayment_df = pd.read_csv('./data/order_orderPayment.csv')
 order_reviews_df = pd.read_csv('./data/order_reviews.csv')
+rfm_df = pd.read_csv('./data/rfm.csv')
 
 order_orderItem_orderPayment_df['order_purchase_timestamp'] = pd.to_datetime(
     order_orderItem_orderPayment_df['order_purchase_timestamp'])
 order_orderPayment_df['order_purchase_timestamp'] = pd.to_datetime(order_orderPayment_df['order_purchase_timestamp'])
+
 
 col1, col2 = st.columns(2)
 
@@ -135,21 +137,26 @@ with col1:
     with st.container(border=True):
         # RFM Analysis
         st.header('RFM Analysis')
-        recent_date = order_orderPayment_df['order_purchase_timestamp'].max()
-        rfm_df = order_orderPayment_df.groupby(by='customer_id', as_index=False).agg({
-            'order_purchase_timestamp': lambda x: (recent_date - x.max()).days,
-            'order_id': 'nunique',
-            'payment_value': 'sum'
-        })
 
-        rfm_df.rename(columns={
-            'order_purchase_timestamp': 'recency',
-            'order_id': 'frequency',
-            'payment_value': 'monetary'
-        }, inplace=True)
+        tab1, tab2, tab3 = st.tabs(['Recency', 'Frequency', 'Monetary'])
 
-        st.write('RFM Data')
-        st.dataframe(rfm_df)
+        with tab1:
+            st.write('Recency (Top 5)')
+            st.write('Recency is the number of days since the last purchase.')
+            st.write('The lower the recency, the better the customer is.')
+            st.dataframe(rfm_df.sort_values(by='recency').head(5))
+
+        with tab2:
+            st.write('Frequency (Top 5)')
+            st.write('Frequency is the number of purchases made by the customer.')
+            st.write('The higher the frequency, the better the customer is.')
+            st.dataframe(rfm_df.sort_values(by='frequency', ascending=False).head(5))
+
+        with tab3:
+            st.write('Monetary (Top 5)')
+            st.write('Monetary is the total amount spent by the customer.')
+            st.write('The higher the monetary, the better the customer is.')
+            st.dataframe(rfm_df.sort_values(by='monetary', ascending=False).head(5))
 
         fig, ax = plt.subplots(3, 1, figsize=(20, 20))
 
@@ -215,7 +222,7 @@ with col2:
         )
 
         start_date, end_date = st.date_input(
-            'Select Date Range', min_value=min_date, max_value=max_date, value=[min_date, max_date])
+            'Select Date Range', min_value=min_date, max_value=max_date, value=[min_date, max_date], format='YYYY-MM-DD')
 
         start_date = pd.to_datetime(start_date)
         end_date = pd.to_datetime(end_date)
