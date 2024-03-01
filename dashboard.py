@@ -29,17 +29,17 @@ Olist adalah platform e-commerce terbesar di Brazil yang menyediakan berbagai ma
 ''')
 
 # Load Data
-customer_geolocation_df = pd.read_csv('./data/customer_geolocation.csv')
-seller_geolocation_df = pd.read_csv('./data/sellers_geolocation.csv')
+customer_geolocation_df = pd.read_csv('./data-dashboard/customer_geolocation.csv')
+seller_geolocation_df = pd.read_csv('./data-dashboard/sellers_geolocation.csv')
 order_orderItem_orderPayment_df = pd.read_csv(
-    './data/order_orderItem_orderPayment.csv')
+    './data-dashboard/order_orderItem_orderPayment.csv')
 product_orderItems_category_df = pd.read_csv(
-    './data/product_orderItems_category.csv')
+    './data-dashboard/product_orderItems_category.csv')
 product_orderItems_category_order_df = pd.read_csv(
-    './data/product_orderItems_category_order.csv')
-order_orderPayment_df = pd.read_csv('./data/order_orderPayment.csv')
-order_reviews_df = pd.read_csv('./data/order_reviews.csv')
-rfm_df = pd.read_csv('./data/rfm.csv')
+    './data-dashboard/product_orderItems_category_order.csv')
+order_orderPayment_df = pd.read_csv('./data-dashboard/order_orderPayment.csv')
+order_reviews_df = pd.read_csv('./data-dashboard/order_reviews.csv')
+rfm_df = pd.read_csv('./data-dashboard/rfm.csv')
 
 order_orderItem_orderPayment_df['order_purchase_timestamp'] = pd.to_datetime(
     order_orderItem_orderPayment_df['order_purchase_timestamp'])
@@ -282,7 +282,7 @@ with st.container(border=True):
     # Demografi Pelanggan
     st.header('Demografi Pelanggan')
 
-    brazil_map = mpimg.imread('./data/brazil_map.png')
+    brazil_map = mpimg.imread('./data-dashboard/brazil_map.png')
     tab1, tab2 = st.tabs(["Customers", "Sellers"])
 
     with tab1:
